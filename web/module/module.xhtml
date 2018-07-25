@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:outputStylesheet library="css" name="bootstrap.css"/>
+    <h:head>
+        <title>Module</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/template/layout.xhtml">
+            <ui:define name="content">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h:dataTable  value="#{moduleController.getaList()}" var="aModule" styleClass="table table-stripped">
+                                <h:column>
+                                    <f:facet name="header">ID</f:facet>
+                                        #{aModule.id}
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Title</f:facet>
+                                    <h:form>
+                                        <c:choose>
+                                            <c:when test="#{!aModule.access.read}">
+                                                <h:commandLink action="#{moduleController.updateForm(aModule)}" value="#{aModule.title}" />
+                                            </c:when>
+                                            <c:otherwise>
+                                                <h:commandLink action="#{moduleController.updateForm(aModule)}" value="izinsiz" />
+                                            </c:otherwise>
+                                        </c:choose>
+
+
+                                    </h:form>
+                                </h:column>
+
+                                <h:column>
+                                    <f:facet name="header">DELETE</f:facet>
+                                    <h:form>
+                                        <h:commandButton styleClass="btn btn-danger" disabled="#{!aModule.access.delete}"  action="#{moduleController.deleteConfirm(aModule)}" value="Delete" />
+                                    </h:form>
+                                </h:column>
+                            </h:dataTable>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <h:form>
+                                <div class="form-module">
+                                    <h:inputHidden value="#{moduleController.module.id}"/>
+                                    <label for="inputName">Module Title</label>
+                                    <h:inputText styleClass="form-control" value="#{moduleController.module.title}"/> <br/>
+                                </div>
+                                <div class="form-module">
+                                    <h:commandButton styleClass="btn btn-primary" disabled="#{!moduleController.module.access.update}" rendered="#{moduleController.module.id!=0}" value="Update" action="#{moduleController.update}"/>
+                                    <h:commandButton styleClass="btn btn-primary"  rendered="#{moduleController.module.id==0}" value="Create" action="#{moduleController.create}"/>
+                                    <h:commandButton styleClass="btn btn-secondary" rendered="#{moduleController.module.id!=0}" value="Clear" action="#{moduleController.clearForm}"/>
+                                </div>
+                            </h:form>
+                        </div>
+
+                    </div>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

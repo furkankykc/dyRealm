@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:outputStylesheet library="css" name="bootstrap.css"/>
+    <h:head>
+        <title>Permissions</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="template/layout.xhtml">
+            <ui:define name="content">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h:dataTable  value="#{permissionsController.getaList()}" var="aPermissions" styleClass="table table-stripped">
+                                <h:column>
+                                    <f:facet name="header">ID</f:facet>
+                                        #{aPermissions.id}
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Module Title</f:facet>
+                                    <h:form>
+                                        <h:commandLink action="#{permissionsController.updateForm(aPermissions)}" value="#{aPermissions.module.title}" />
+                                    </h:form>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Create</f:facet>
+                                        #{aPermissions.create}
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Read</f:facet>
+                                        #{aPermissions.read}
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Update</f:facet>
+                                        #{aPermissions.update}
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Delete Perm</f:facet>
+                                        #{aPermissions.delete}
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">DELETE</f:facet>
+                                    <h:form>
+                                        <h:commandButton styleClass="btn btn-danger" action="#{permissionsController.deleteConfirm(aPermissions)}" value="Delete" />
+                                    </h:form>
+                                </h:column>
+                            </h:dataTable>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <h:form>
+                                <div class="form-permissions">
+                                    <h:inputHidden value="#{permissionsController.permissions.id}"/>
+                                    <label for="inputName">Module</label>
+                                    <h:selectOneMenu styleClass="custom-select" value="#{permissionsController.permissions.module}" converter="moduleConverter">
+                                        <f:selectItems value="#{moduleController.getaList()}" var="module" itemValue="#{module}" itemLabel="#{module.title}"/>
+                                    </h:selectOneMenu>
+                                    <label for="inputName">Create</label>
+                                    <h:selectBooleanCheckbox styleClass="form-control" value="#{permissionsController.permissions.create}"/> <br/>
+                                    <label for="inputName">Read</label>
+                                    <h:selectBooleanCheckbox styleClass="form-control" value="#{permissionsController.permissions.read}"/> <br/>
+                                    <label for="inputName">Update</label>
+                                    <h:selectBooleanCheckbox styleClass="form-control" label="Update " title="aszsd" value="#{permissionsController.permissions.update}"/> <br/>
+                                    <label for="inputName">Delete</label>
+                                    <h:selectBooleanCheckbox styleClass="form-control" value="#{permissionsController.permissions.delete}"/> <br/>
+                                </div>
+                                <div class="form-permissions">
+                                    <h:commandButton styleClass="btn btn-primary" rendered="#{permissionsController.permissions.id!=0}" value="Update" action="#{permissionsController.update}"/>
+                                    <h:commandButton styleClass="btn btn-primary" rendered="#{permissionsController.permissions.id==0}" value="Create" action="#{permissionsController.create}"/>
+                                    <h:commandButton styleClass="btn btn-secondary" rendered="#{permissionsController.permissions.id!=0}" value="Clear" action="#{permissionsController.clearForm}"/>
+                                </div>
+                            </h:form>
+                        </div>
+
+                    </div>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
